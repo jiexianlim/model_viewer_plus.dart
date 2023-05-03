@@ -8,73 +8,75 @@ import '../model_viewer_plus.dart';
 abstract class HTMLBuilder {
   HTMLBuilder._();
 
-  static String build({
-    String htmlTemplate = '',
-    // Attributes
-    // Loading Attributes
-    required final String src,
-    final String? alt,
-    final String? poster,
-    final Loading? loading,
-    final Reveal? reveal,
-    final bool? withCredentials,
-    // AR Attributes
-    final bool? ar,
-    final List<String>? arModes,
-    final ArScale? arScale,
-    final ArPlacement? arPlacement,
-    final String? iosSrc,
-    final bool? xrEnvironment,
-    // Staging & Cameras Attributes
-    final bool? cameraControls,
-    final bool? disablePan,
-    final bool? disableTap,
-    final TouchAction? touchAction,
-    final bool? disableZoom,
-    final int? orbitSensitivity,
-    final bool? autoRotate,
-    final int? autoRotateDelay,
-    final String? rotationPerSecond,
-    final InteractionPrompt? interactionPrompt,
-    final InteractionPromptStyle? interactionPromptStyle,
-    final num? interactionPromptThreshold,
-    final String? cameraOrbit,
-    final String? cameraTarget,
-    final String? fieldOfView,
-    final String? maxCameraOrbit,
-    final String? minCameraOrbit,
-    final String? maxFieldOfView,
-    final String? minFieldOfView,
-    final num? interpolationDecay,
-    // Lighting & Env Attributes
-    final String? skyboxImage,
-    final String? environmentImage,
-    final num? exposure,
-    final num? shadowIntensity,
-    final num? shadowSoftness,
-    // Animation Attributes
-    final String? animationName,
-    final num? animationCrossfadeDuration,
-    final bool? autoPlay,
-    // Scene Graph Attributes
-    final String? variantName,
-    final String? orientation,
-    final String? scale,
+  static String build(
+      {String htmlTemplate = '',
+      // Attributes
+      // Loading Attributes
+      required final String src,
+      final String? alt,
+      final String? poster,
+      final Loading? loading,
+      final Reveal? reveal,
+      final bool? withCredentials,
+      // AR Attributes
+      final bool? ar,
+      final List<String>? arModes,
+      final ArScale? arScale,
+      final ArPlacement? arPlacement,
+      final String? iosSrc,
+      final bool? xrEnvironment,
+      // Staging & Cameras Attributes
+      final bool? cameraControls,
+      final bool? disablePan,
+      final bool? disableTap,
+      final TouchAction? touchAction,
+      final bool? disableZoom,
+      final int? orbitSensitivity,
+      final bool? autoRotate,
+      final int? autoRotateDelay,
+      final String? rotationPerSecond,
+      final InteractionPrompt? interactionPrompt,
+      final InteractionPromptStyle? interactionPromptStyle,
+      final num? interactionPromptThreshold,
+      final String? cameraOrbit,
+      final String? cameraTarget,
+      final String? fieldOfView,
+      final String? maxCameraOrbit,
+      final String? minCameraOrbit,
+      final String? maxFieldOfView,
+      final String? minFieldOfView,
+      final num? interpolationDecay,
+      // Lighting & Env Attributes
+      final String? skyboxImage,
+      final String? environmentImage,
+      final num? exposure,
+      final num? shadowIntensity,
+      final num? shadowSoftness,
+      // Animation Attributes
+      final String? animationName,
+      final num? animationCrossfadeDuration,
+      final bool? autoPlay,
+      // Scene Graph Attributes
+      final String? variantName,
+      final String? orientation,
+      final String? scale,
 
-    // CSS Styles
-    final Color backgroundColor = Colors.transparent,
+      // CSS Styles
+      final Color backgroundColor = Colors.transparent,
 
-    // Annotations CSS
-    final num? minHotspotOpacity,
-    final num? maxHotspotOpacity,
+      // Annotations CSS
+      final num? minHotspotOpacity,
+      final num? maxHotspotOpacity,
 
-    // Others
-    final String? innerModelViewerHtml,
-    final String? relatedCss,
-    final String? relatedJs,
-    final String? id,
-    final bool? debugLogging,
-  }) {
+      // Others
+      final String? innerModelViewerHtml,
+      final String? relatedCss,
+      final String? relatedJs,
+      final String? id,
+      final bool? debugLogging,
+
+      // JX
+      final num? progress}) {
     if (relatedCss != null) {
       htmlTemplate = htmlTemplate.replaceFirst('/* other-css */', relatedCss);
     }
@@ -394,9 +396,22 @@ abstract class HTMLBuilder {
     }
     modelViewerHtml.writeln('</model-viewer>');
 
+    final progressJs = '''
+    const modelViewer = document.querySelector('model-viewer');
+    const progressPercent = document.getElementById('progress-percent');
+
+    modelViewer.addEventListener('progress', (event) => {
+    const progress = Math.round(event.detail.totalProgress * 100);
+    progressPercent.textContent = progress;
+  });
+''';
+
+    final combinedJs = (relatedJs ?? '') + progressJs;
+
     if (relatedJs != null) {
       modelViewerHtml.writeln('<script>');
-      modelViewerHtml.write(relatedJs);
+      // modelViewerHtml.write(relatedJs);
+      modelViewerHtml.write(combinedJs);
       modelViewerHtml.writeln('</script>');
     }
 

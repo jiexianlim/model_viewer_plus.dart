@@ -17,6 +17,7 @@ dependencies:
   android_intent_plus: ^3.1.5
   webview_flutter: ^3.0.4
   url_launcher: ^6.1.7
+  webview_media: ^0.1.2
 dev_dependencies:
   flutter_test:
     sdk: flutter
