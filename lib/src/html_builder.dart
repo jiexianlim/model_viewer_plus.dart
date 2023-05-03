@@ -410,8 +410,8 @@ abstract class HTMLBuilder {
 
     if (relatedJs != null) {
       modelViewerHtml.writeln('<script>');
-      // modelViewerHtml.write(relatedJs);
-      modelViewerHtml.write(combinedJs);
+      modelViewerHtml.write(relatedJs);
+      // modelViewerHtml.write(combinedJs);
       modelViewerHtml.writeln('</script>');
     }
 
