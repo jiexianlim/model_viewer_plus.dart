@@ -402,7 +402,7 @@ abstract class HTMLBuilder {
 
     modelViewer.addEventListener('progress', (event) => {
     const progress = Math.round(event.detail.totalProgress * 100);
-    progressPercent.textContent = progress;
+    progressPercent.textContent = $progress;
   });
 ''';
 
@@ -410,8 +410,8 @@ abstract class HTMLBuilder {
 
     if (relatedJs != null) {
       modelViewerHtml.writeln('<script>');
-      modelViewerHtml.write(relatedJs);
-      // modelViewerHtml.write(combinedJs);
+      // modelViewerHtml.write(relatedJs);
+      modelViewerHtml.write(combinedJs);
       modelViewerHtml.writeln('</script>');
     }
 
